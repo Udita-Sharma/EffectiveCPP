@@ -1,6 +1,7 @@
 //Program to show how initialization list is better than assignment/dfault ctor is when it is containment
 
- /* In this example, the difference is negligible, but imagine if you will that A's default constructor did more, such as allocating memory or opening files. You wouldn't want to do that unnecessarily. */
+ /* In this example, the difference is negligible, but imagine if you will that A's default constructor did more, 
+ such as allocating memory or opening files. You wouldn't want to do that unnecessarily. */
 
 #include<iostream>
 using namespace std;
