@@ -11,7 +11,7 @@ class A
             cout<<"A's deafult ctor"<<endl;
         }
         A& operator=(const A &rhs);
-        A& operator=(int rhs);
+        A& operator=(int rhs);// for int
         
         ~A(){}
     private:
