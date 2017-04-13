@@ -10,4 +10,6 @@ int main()
     A a1;
     return 0;
 }
-   
+/*output:
+Hello1.36
+*/
