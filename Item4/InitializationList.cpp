@@ -11,7 +11,7 @@ class A
     public:
     
     int x;
-    A()
+    A()//May have code for allocating memory or opening files , we may not want default ctor to be called
     {
         cout<<" A's Deafult Ctor"<<endl;
         x=0;
