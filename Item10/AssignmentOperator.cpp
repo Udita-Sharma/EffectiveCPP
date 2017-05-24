@@ -41,6 +41,17 @@ int main()
     x =  y = z = i;
     return 0;
 }
+
+/*
+output:
+A's deafult ctor
+A's deafult ctor
+A's deafult ctor
+int::rhs = 10
+A::rhs = 10
+A::rhs = 10
+
+*/
     
 
     
