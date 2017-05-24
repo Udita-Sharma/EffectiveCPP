@@ -16,9 +16,10 @@ public:
 			cout<<"Called Self Assignment operator for itself"<<endl;
 			return *this;
 		}
-		delete pb;
+		
 		cout<<"copy one widget to another"<<endl;
 		pb = new Bitmap(*rhs.pb);
+		delete pb;
 		return *this;
 	}
 private:
@@ -36,3 +37,7 @@ int main()
 	w2 = w2;//Called Self Assignment operator for itself
 	return 0;
 }
+/*output:
+copy one widget to another
+Called Self Assignment operator for itself
+*/
