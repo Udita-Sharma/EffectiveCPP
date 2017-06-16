@@ -37,4 +37,4 @@ int main()
 	int a = 3;
 	A obj1(a);
 	return 0;
-}
+}N
