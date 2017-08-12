@@ -5,7 +5,7 @@ class Shape
 {
 public:
 	virtual void draw() const = 0;
-	/*virtual void draw() const
+	/*virtual void draw() const it is possible to provide a definition for a pure virtual function
 	{
 		cout<<"shape draw"<<endl;
 	}*/

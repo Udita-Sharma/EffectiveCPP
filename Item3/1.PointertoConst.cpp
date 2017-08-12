@@ -26,3 +26,8 @@ int main()
     
     return 0;
 }
+/*output
+$ ./a.exe
+10
+10
+*/
