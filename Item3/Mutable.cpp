@@ -4,9 +4,9 @@ using namespace std;
 class mutableExample
 {
 public:
-	const void function() const
+	void function() const
 	{
-		//i = 10; We cannot change i
+		//i = 10; //We cannot change i
 		/*
 		Mutable.cpp:9:5: error: assignment of member ‘mutableExample::i’ in read-only object
 		i = 10;
