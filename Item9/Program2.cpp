@@ -39,3 +39,9 @@ int main()
 	BuyTransaction bt(1);
 	return 0;
 }
+
+/*output
+base class ctor
+Base logTransaction
+Hello
+*/
