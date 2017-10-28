@@ -27,12 +27,18 @@ Problem1 can be solved by using RAII.
 	Lock ml(&mutex);
 	
 Exception safe functions offer 3 gaurantee:
-1.Basic Gaurantee : the program remains in a valid state i.e. no object/data structure is corrupted. To acheive our problem2, we can make bgImage continue to have old/default background image. But client will not be able to predict which.
-2.Strong Gaurantee : Calls to such functions remains atomic i.e. if they succeed they succeed completely else the program state is as if they have never been called.
-3.No throw gaurantee : promise never to throw exceptions, because they always do what they promise to do. All operations on built-in types (e.g., ints, pointers, etc.) are nothrow (i.e., offer the nothrow guarantee).   Anything using dynamically allocated
-memory (e.g., all STL containers) typically throws a bad_alloc exception if it can’t find enough memory to satisfy a request. So we cannot apply no throw there.
+1.Basic Gaurantee : the program remains in a valid state i.e. no object/data structure is corrupted. To acheive our 
+problem2, we can make bgImage continue to have old/default background image. But client will not be able to predict 
+which.
+2.Strong Gaurantee : Calls to such functions remains atomic i.e. if they succeed they succeed completely else the 
+program state is as if they have never been called.
+3.No throw gaurantee : promise never to throw exceptions, because they always do what they promise to do. 
+All operations on built-in types (e.g., ints, pointers, etc.) are nothrow (i.e., offer the nothrow guarantee).  
+Anything using dynamically allocated memory (e.g., all STL containers) typically throws a bad_alloc exception if it 
+can’t find enough memory to satisfy a request. So we cannot apply no throw there.
 
-Exception-safe code must offer one of the three guarantees above. If it doesn’t, it’s not exception-safe. The choice, then, is to determine which guarantee to offer for each of the functions you write.
+Exception-safe code must offer one of the three guarantees above. If it doesn’t, it’s not exception-safe. 
+The choice, then, is to determine which guarantee to offer for each of the functions you write.
 	
 Better to provide strong gaurantee in changeBackground. It can be achieved by 
 
@@ -46,8 +52,58 @@ void PrettyMenu::changeBackground(std::istream& imgSrc)
 	++imageChanges;
 }
 
-There are 2 changes done : 1. Make bgImange shared_ptr usage of RAII is very good and we don't have to delete bgImage now.
-2.Rearrange the ++imageChanges, the imageChanges will be incremented only if the reset is successfull
+There are 2 changes done : 
+1. Make bgImange shared_ptr usage of RAII is very good and we don't have to delete bgImage now.
+2. Rearrange the ++imageChanges, the imageChanges will be incremented only if the reset is successfull
+
+We can apply one more strategy which is "Copy and Swap" in which we make copy of the object we want to modify.
+make all the changes to the copy, if any operation throws exception, the original object remains unchanged, 
+if successfull swap the modified object with original.
+
+This is usually implemented by putting all the per-object data from the “real” object into a separate implementation 
+object, then giving the real object a pointer to its implementation object. This is often known as the “pimpl idiom,”
+
+struct PMImpl 
+{ // PMImpl = “PrettyMenu
+	shared_ptr<Image> bgImage; // Impl.”; see below for
+	int imageChanges; // why it’s a struct
+};
+
+class PrettyMenu 
+{
+	private:
+		Mutex mutex;
+		shared_ptr<PMImpl> pImpl;
+};
+void PrettyMenu::changeBackground(std::istream& imgSrc)
+{
+	using std::swap; 						// see Item25
+	
+	Lock ml(&mutex); 						// acquire the mutex
+	
+	shared_ptr<PMImpl> 						// copy obj. data
+	
+	pNew(new PMImpl(*pImpl));
+	pNew->bgImage.reset(new Image(imgSrc)); // modify the copy
+	
+	++pNew->imageChanges;
+	
+	swap(pImpl, pNew); 						// swap the new data into place
+} 											// release the mutex
 
 
+void someFunc()
+{
+	...
+	f1();
+	...
+	f2();
+}
 
+Suppose , someFunc() wants to ensure strong gaurantee but f1() provides basic gaurantee, hence someFunc()
+will not be able to provide strong gaurantee even though we want it to.
+Second, copying object and swaping may require time and space and always it cannot be possible to provide the
+strong gaurantee. Thus providing basic gaurantee is also fine.
+
+The code can be exception-safe ot it's not. There is no thing like partially exception-safe. so we should strive to
+write exception-safe code;
