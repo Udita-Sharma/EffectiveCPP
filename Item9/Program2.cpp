@@ -26,7 +26,7 @@ class BuyTransaction: public Transaction { // derived class
 		BuyTransaction(int parameter):Transaction(createLogString(parameter))
 		{}
 	private:
-		static string createLogString( int parameter )
+		string createLogString( int parameter )
 		{
 			return "Hello";
 		}

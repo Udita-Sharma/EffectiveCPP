@@ -1,0 +1,32 @@
+Inline functions - act like function but no overhead of function call. There are some drawbacks: On machines with
+limited memory, overzealous inline functions can give rise to additional paging, a reduced instruction cache hit rate, and the
+performance penalties. A short inline function can lead to smaller object code and a higher instruction cache hit
+rate!
+
+The inline is a request to compilers(not command) can be declared in two ways:
+
+1. Implicit
+2. Explicit
+
+Inline functions must typically be in header files, because most build environments do inlining during compilation. 
+In order to replace a function call with the body of the called function, compilers must know what the function looks like.
+
+Templates are typically in header files, because compilers need to know what a template looks like in order to 
+instantiate it when it’s used. (Again, this is not universal).
+
+As inline is a request, it can be ignored by compiler. Compiler can ignore if functions are too complicated ex, if it
+contains loop or if it is virtual because virtual means "wait until runtime to figure out which function to call and inline"
+is "before the execution replace the call site with called function"
+
+most compilers have a diagnostic level that will result in a warning (see Item 53) if they fail to inline a function
+you’ve asked them to.
+
+Function pointers compiler won't perform inlining. See Example1.cpp
+
+We should think carefully before declaring a function inline.
+	1. We can consider making a ctor inline but it is a bad idea since a ctor which we feel is empty can have many calls inside it. Example2.cpp
+	2. If we are a library developer and we make a function f() inline which will be used by the client, but suppose because of some reason we
+		want to change f(), then user will have to rebuild the whole library, instead of just linking it.
+		
+This leads to a logical strategy for determining which functions should be declared inline and which should not.
+		
