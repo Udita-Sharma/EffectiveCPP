@@ -47,12 +47,12 @@ public:
 	Rectangle(Point p1, Point p2):pData(new RecData(p1,p2))
 	{
 	}
-	Point &upperLeft() const
+	const Point &upperLeft() const // notice const here
 	{
 		return pData->ulhc;
 	}
 
-	Point &lowerRight() const
+	const Point &lowerRight() const // notice const here
 	{
 		return pData->lrhc;
 	}
@@ -71,16 +71,14 @@ int main()
 	cout<< cord2 << endl;
 	cout<< rec.upperLeft()<< endl;
 	cout<< rec.lowerRight()<< endl;	
-	rec.upperLeft().setX(50);//Even though rec is const we can still modify it
+	rec.upperLeft().setX(50);//we get compiler error, but this is also not a right technique since we are telling the client that they can setX
 	cout<< rec.upperLeft()<<endl;
 	
 	return 0;
 }
 
-/*output
-x:0 y:0
-x:100 y:100
-x:0 y:0
-x:100 y:100
-x:50 y:0
+/* Compiler error
+Test1.cpp: In function ‘int main()’:
+Test1.cpp:74:25: error: passing ‘const Point’ as ‘this’ argument discards qualifiers [-fpermissive]
+  rec.upperLeft().setX(50);//Even though rec is const we can still modify it
 */

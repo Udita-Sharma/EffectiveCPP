@@ -47,12 +47,12 @@ public:
 	Rectangle(Point p1, Point p2):pData(new RecData(p1,p2))
 	{
 	}
-	Point &upperLeft() const
+	const Point &upperLeft() const // notice const here
 	{
 		return pData->ulhc;
 	}
 
-	Point &lowerRight() const
+	const Point &lowerRight() const // notice const here
 	{
 		return pData->lrhc;
 	}
@@ -61,6 +61,15 @@ private:
 	RecData* pData;
 
 };
+
+class GUI{};
+
+const Rectangle boundingBox(const GUI& obj){
+	 Point cord1(10, 0);
+	Point cord2(100, 100);
+	Rectangle rec(cord1, cord2);
+	return rec;
+}
 
 int main()
 {
@@ -71,16 +80,17 @@ int main()
 	cout<< cord2 << endl;
 	cout<< rec.upperLeft()<< endl;
 	cout<< rec.lowerRight()<< endl;	
-	rec.upperLeft().setX(50);//Even though rec is const we can still modify it
-	cout<< rec.upperLeft()<<endl;
 	
+	GUI *pgo;
+	const Point *upper_left = &(boundingBox(*pgo).upperLeft());
+	cout<< *upper_left <<endl; // x:10 y:0 but upperleft is a dangling handler now	
 	return 0;
 }
 
 /*output
 x:0 y:0
 x:100 y:100
-x:0 y:0
+x:00 y:0
 x:100 y:100
-x:50 y:0
+x:10 y:0
 */
