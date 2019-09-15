@@ -28,6 +28,7 @@ class D: public B, public C {
     public:
         D(int x_a, int x_b, int x_c, int x_d) : A(x_a), B(x_b), C(x_c), d(x_d) {}
 		//Only D class has power to initialize A's data member since we are using virtual inheritance
+		//when a new derived class is added to the hierarchy, it must assume initialization responsibilities for its virtual bases 
         
     private:
         int d;
